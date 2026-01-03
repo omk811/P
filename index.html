@@ -1,548 +1,2080 @@
-لقد قمت بتصميم درس تفاعلي كامل في صفحة واحدة (Single Page Application). يحتوي هذا الملف على:
-1.  **نص القصيدة التفاعلي**: عند الضغط على الكلمات الصعبة يظهر معناها.
-2.  **بطاقات تعليمية (Flashcards)**: لتعلم المفردات.
-3.  **لعبة ترتيب الأحداث**: نشاط تفاعلي لفهم تسلسل القصة.
-4.  **اختبار إلكتروني**: مع تصحيح فوري للإجابات.
-5.  **تحليل الشخصيات**: جدول مقارنة تفاعلي.
-
-يمكنك نسخ الكود التالي وحفظه في ملف باسم `index.html` وتشغيله على أي متصفح.
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درس تفاعلي: الغراب والثعلب</title>
-    <!-- استدعاء خطوط عربية جميلة من جوجل -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    
+    <title>الغراب والثعلب - درس تفاعلي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2c3e50;    /* كحلي */
-            --accent: #d35400;     /* برتقالي (لون الثعلب) */
-            --success: #27ae60;    /* أخضر */
-            --error: #c0392b;      /* أحمر */
-            --bg: #fdfbf7;         /* لون خلفية ورقي */
-            --card-bg: #ffffff;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --crow-color: #374151;
+            --fox-color: #ea580c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg);
-            color: var(--primary);
-            margin: 0;
-            padding: 0;
-            line-height: 1.8;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* --- تصميم الهيدر --- */
-        header {
-            background: linear-gradient(135deg, var(--primary), #34495e);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            border-bottom: 6px solid var(--accent);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 { margin: 0; font-size: 2.5rem; }
-        .subtitle { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
-
-        /* --- الحاويات --- */
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        section {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-        }
-
-        h2 {
-            color: var(--accent);
-            border-right: 5px solid var(--primary);
-            padding-right: 15px;
-            margin-top: 0;
-        }
-
-        /* --- تنسيق القصيدة --- */
-        .poem-container {
-            font-family: 'Amiri', serif;
-            font-size: 1.3rem;
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
             text-align: center;
-            background: #fffcf5;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px dashed #daccb3;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
         }
 
-        .verse {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--fox-color), var(--secondary), var(--crow-color));
+        }
+
+        .header-icons {
+            font-size: 4rem;
             margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
             display: flex;
             flex-wrap: wrap;
+            gap: 10px;
             justify-content: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            border: none;
+            background: #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            background: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Content Sections */
+        .section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e2e8f0;
+        }
+
+        .section-title h2 {
+            color: var(--dark);
+            font-size: 1.8rem;
+        }
+
+        .section-title .icon {
+            font-size: 2.5rem;
+        }
+
+        /* Objectives */
+        .objectives-grid {
+            display: grid;
             gap: 15px;
         }
 
-        .verse span { min-width: 250px; }
-
-        .clickable-word {
-            color: var(--accent);
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: underline;
-            text-decoration-style: dotted;
-            position: relative;
+        .objective-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 12px;
+            border-right: 4px solid var(--success);
+            transition: transform 0.3s;
         }
 
-        .clickable-word:hover {
-            background-color: rgba(211, 84, 0, 0.1);
+        .objective-item:hover {
+            transform: translateX(-5px);
         }
 
-        /* --- البطاقات القلابة (المفردات) --- */
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-        }
-
-        .flip-card {
-            background-color: transparent;
-            height: 120px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .flip-card.flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
+        .objective-item .check {
+            width: 30px;
+            height: 30px;
+            background: var(--success);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            border-radius: 10px;
+            color: white;
             font-weight: bold;
         }
 
-        .flip-card-front {
-            background-color: var(--primary);
-            color: white;
-            font-size: 1.1rem;
+        /* Poem Section */
+        .poem-container {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
         }
 
-        .flip-card-back {
-            background-color: var(--accent);
-            color: white;
-            transform: rotateY(180deg);
-            font-size: 1rem;
-        }
-
-        /* --- لعبة الترتيب --- */
-        .order-item {
-            background: #ecf0f1;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            border-left: 5px solid transparent;
-        }
-
-        .order-item:hover { background: #dfe6e9; transform: translateX(-5px); }
-        
-        .order-item.correct {
-            background: #d4edda;
-            border-left-color: var(--success);
-            color: #155724;
-            pointer-events: none;
-        }
-
-        .order-item.wrong {
-            animation: shake 0.5s;
-            background: #f8d7da;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(5px); }
-            50% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-            100% { transform: translateX(0); }
-        }
-
-        /* --- الاختبار --- */
-        .quiz-option {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 2px solid #eee;
+        .poem-verse {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 15px;
+            margin-bottom: 10px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            line-height: 2;
+            transition: all 0.3s;
             cursor: pointer;
-            text-align: right;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: 0.3s;
         }
 
-        .quiz-option:hover { background: #f9f9f9; border-color: #ddd; }
-
-        .quiz-option.correct {
-            background: #d4edda;
-            border-color: var(--success);
-            color: #155724;
+        .poem-verse:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
-        .quiz-option.wrong {
-            background: #f8d7da;
-            border-color: var(--error);
-            color: #721c24;
+        .poem-verse.highlighted {
+            background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+            border: 2px solid var(--primary);
         }
 
-        /* --- أزرار عامة --- */
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-            display: inline-block;
-            margin-top: 15px;
-        }
-        .btn:hover { background: var(--accent); transform: scale(1.05); }
-
-        /* --- جدول المقارنة --- */
-        .comp-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        .comp-table th { background: var(--primary); color: white; padding: 10px; }
-        .comp-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        .hidden-row { opacity: 0; transition: opacity 1s; }
-        .visible-row { opacity: 1; }
-
-        /* --- Footer --- */
-        footer {
+        .verse-part {
             text-align: center;
+        }
+
+        /* Vocabulary */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .vocab-card {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 12px;
             padding: 20px;
-            color: #777;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .vocab-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .vocab-word {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .vocab-meaning {
+            color: #64748b;
+            display: none;
+        }
+
+        .vocab-card.revealed .vocab-meaning {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vocab-hint {
+            color: #94a3b8;
             font-size: 0.9rem;
         }
 
-        /* تجاوب مع الشاشات الصغيرة */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .verse span { width: 100%; display: block; margin-bottom: 5px; }
+        .vocab-card.revealed .vocab-hint {
+            display: none;
+        }
+
+        /* Characters */
+        .characters-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .character-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .character-card.crow {
+            border-top: 5px solid var(--crow-color);
+        }
+
+        .character-card.fox {
+            border-top: 5px solid var(--fox-color);
+        }
+
+        .character-icon {
+            font-size: 5rem;
+            margin-bottom: 15px;
+        }
+
+        .character-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .crow .character-name { color: var(--crow-color); }
+        .fox .character-name { color: var(--fox-color); }
+
+        .traits-list {
+            list-style: none;
+            text-align: right;
+        }
+
+        .traits-list li {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Story Scenes */
+        .scene-container {
+            position: relative;
+        }
+
+        .scene {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .scene.active {
+            display: block;
+        }
+
+        .scene-card {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .scene-number {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .scene-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .scene-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .scene-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #374151;
+            margin-bottom: 20px;
+        }
+
+        .scene-verse {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--primary-dark);
+        }
+
+        .scene-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .scene-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scene-btn.prev {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+
+        .scene-btn.next {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .scene-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .scene-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .scene-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .scene-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scene-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        /* Activities */
+        .activity-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .activity-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Ordering Activity */
+        .order-list {
+            list-style: none;
+        }
+
+        .order-item {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            cursor: grab;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .order-item:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .order-item.dragging {
+            opacity: 0.5;
+            border-color: var(--primary);
+        }
+
+        .order-item.correct {
+            background: #dcfce7;
+            border-color: var(--success);
+        }
+
+        .order-item.incorrect {
+            background: #fee2e2;
+            border-color: var(--danger);
+        }
+
+        .order-number {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Quiz */
+        .quiz-question {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .options-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: #e0e7ff;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: #dcfce7;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .option-letter {
+            width: 35px;
+            height: 35px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .option.selected .option-letter {
+            background: var(--primary);
+            color: white;
+        }
+
+        .option.correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: var(--danger);
+            color: white;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Score Display */
+        .score-display {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .score-label {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .score-message {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* Lessons Learned */
+        .lessons-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .lesson-card {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+
+        .lesson-card:hover {
+            transform: translateX(-5px);
+        }
+
+        .lesson-number {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .lesson-content h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .lesson-content p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Wisdom Box */
+        .wisdom-box {
+            background: linear-gradient(135deg, var(--crow-color), #1f2937);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .wisdom-box .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .wisdom-box .text {
+            font-size: 1.5rem;
+            line-height: 1.8;
+        }
+
+        /* Matching Game */
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .matching-column h4 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .matching-item {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .matching-item:hover {
+            border-color: var(--primary);
+        }
+
+        .matching-item.selected {
+            border-color: var(--primary);
+            background: #e0e7ff;
+        }
+
+        .matching-item.matched {
+            border-color: var(--success);
+            background: #dcfce7;
+            cursor: default;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34d399);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Fill Blanks */
+        .fill-blank-sentence {
+            font-size: 1.2rem;
+            line-height: 2.5;
+            margin-bottom: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .blank-input {
+            padding: 8px 15px;
+            border: 2px dashed var(--primary);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 150px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .blank-input:focus {
+            outline: none;
+            border-style: solid;
+            background: #e0e7ff;
+        }
+
+        .blank-input.correct {
+            border-color: var(--success);
+            background: #dcfce7;
+        }
+
+        .blank-input.incorrect {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tab {
+                justify-content: center;
+            }
+
+            .poem-verse {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .matching-container {
+                grid-template-columns: 1fr;
+            }
+
+            .characters-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .nav-tabs, .scene-nav, .btn {
+                display: none;
+            }
+
+            .section {
+                display: block !important;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-icons">🦊 🐦‍⬛</div>
+            <h1>الغُرابُ والثعلبُ</h1>
+            <p class="subtitle">حكاية شعرية من أوروبا - درس تفاعلي</p>
+        </header>
 
-<header>
-    <h1> درس: الغراب والثعلب 🐦‍⬛🦊</h1>
-    <div class="subtitle">حكاية شعرية من الأدب العالمي</div>
-</header>
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('objectives')">
+                <span>🎯</span> الأهداف
+            </button>
+            <button class="nav-tab" onclick="showSection('poem')">
+                <span>📜</span> القصيدة
+            </button>
+            <button class="nav-tab" onclick="showSection('vocabulary')">
+                <span>📚</span> المفردات
+            </button>
+            <button class="nav-tab" onclick="showSection('story')">
+                <span>🎬</span> القصة
+            </button>
+            <button class="nav-tab" onclick="showSection('characters')">
+                <span>🎭</span> الشخصيات
+            </button>
+            <button class="nav-tab" onclick="showSection('activities')">
+                <span>🎮</span> الأنشطة
+            </button>
+            <button class="nav-tab" onclick="showSection('quiz')">
+                <span>✅</span> الاختبار
+            </button>
+            <button class="nav-tab" onclick="showSection('lessons')">
+                <span>💡</span> العِبَر
+            </button>
+        </nav>
 
-<div class="container">
-
-    <!-- 1. قسم القصيدة التفاعلي -->
-    <section>
-        <h2>📖 اقرأ القصيدة واكتشف المعاني</h2>
-        <p style="text-align: center; color: #777;">💡 اضغط على الكلمات الملونة لتعرف معناها</p>
-        
-        <div class="poem-container">
-            <div class="verse">
-                <span>إلى <b class="clickable-word" onclick="showDef('دوحة', 'شجرة كبيرة وعظيمة')">دَوْحَةٍ</b> قد أوى مرةً</span>
-                <span>غُرابٌ وفي غُصنِها قد <b class="clickable-word" onclick="showDef('جثم', 'جلس ولزم مكانه')">جَثَمْ</b></span>
+        <!-- Objectives Section -->
+        <section id="objectives" class="section active">
+            <div class="section-title">
+                <span class="icon">🎯</span>
+                <h2>أهداف الدرس</h2>
             </div>
-            <div class="verse">
-                <span>وكانت بِمِنقارِهِ جُبنَةٌ</span>
-                <span><b class="clickable-word" onclick="showDef('يهش', 'يرتاح ويفرح')">يَهَشُّ</b> إلى أكلِها ذو <b class="clickable-word" onclick="showDef('النهم', 'شدة الشهية والرغبة في الطعام')">النَّهَمْ</b></span>
-            </div>
-            <div class="verse">
-                <span>فوافاهُ مُستَرِوحاً ثعلبٌ</span>
-                <span>يهيجُ حَشاهُ بِمِثلِ <b class="clickable-word" onclick="showDef('الضرم', 'النار المشتعلة (كناية عن شدة الجوع)')">الضَّرَمْ</b></span>
-            </div>
-            <div class="verse">
-                <span>فحيّا الغرابَ وقال له:</span>
-                <span>"سلامٌ أيّها الصاحبُ المُحترمُ"</span>
-            </div>
-            <div class="verse">
-                <span>"لَعَمري إنكَ باهرُ شكلٍ"</span>
-                <span>"بديعُ الملامحِ من غيرِ ذَمّ"</span>
-            </div>
-            <div class="verse">
-                <span>"فلو أن صَوتَكَ ناسَبَ ريشَك"</span>
-                <span>"حُسناً لكان لك الحُسنُ تَمّ"</span>
-            </div>
-            <div class="verse">
-                <span>فأفرجَ مِنقارَهُ فإذا</span>
-                <span>بِجُبنَتِه في فَمِ أيِّ فَمِ</span>
-            </div>
-            <div class="verse">
-                <span>فالتقطها <b class="clickable-word" onclick="showDef('ذو الدهاء', 'صاحب المكر والذكاء (الثعلب)')">ذو الدَّهاءِ</b> سريعاً</span>
-                <span>فكانت له من ألذِّ اللُّقَمِ</span>
-            </div>
-            <div class="verse">
-                <span>فكاد الغرابُ يذوبُ حياءً</span>
-                <span>وأنشأ يقرعُ <b class="clickable-word" onclick="showDef('سن الندم', 'يعض أصابعه ندماً وحسرة')">سِنَّ النَّدَمِ</b></span>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. بطاقات المفردات -->
-    <section>
-        <h2>🧠 بطاقات الذاكرة (المفردات)</h2>
-        <div class="vocab-grid">
-            <!-- بطاقة 1 -->
-            <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">دَوْحَة</div>
-                    <div class="flip-card-back">شجرة كبيرة</div>
+            <div class="objectives-grid">
+                <div class="objective-item">
+                    <span class="check">✓</span>
+                    <span>قراءة القصيدة قراءة معبرة صحيحة</span>
+                </div>
+                <div class="objective-item">
+                    <span class="check">✓</span>
+                    <span>استخلاص الأحداث الرئيسية من القصة الشعرية</span>
+                </div>
+                <div class="objective-item">
+                    <span class="check">✓</span>
+                    <span>تحديد صفات الشخصيات وأفعالها</span>
+                </div>
+                <div class="objective-item">
+                    <span class="check">✓</span>
+                    <span>استنتاج العبرة والحكمة من القصة</span>
+                </div>
+                <div class="objective-item">
+                    <span class="check">✓</span>
+                    <span>التمييز بين المدح الصادق والتملق الكاذب</span>
                 </div>
             </div>
-            <!-- بطاقة 2 -->
-            <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">جَثَمَ</div>
-                    <div class="flip-card-back">جلس واستقر</div>
+        </section>
+
+        <!-- Poem Section -->
+        <section id="poem" class="section">
+            <div class="section-title">
+                <span class="icon">📜</span>
+                <h2>نص القصيدة</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 20px; color: #64748b;">
+                👆 انقر على أي بيت لتمييزه
+            </p>
+            <div class="poem-container">
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">إلى دوحةٍ قد أوى مرةً</div>
+                    <div class="verse-part">غرابٌ وفي غصنِها قد جثمْ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">وكانت بمنقارهِ جبنةٌ</div>
+                    <div class="verse-part">يهشُّ إلى أكلِها ذو النهَمِ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">فوافاهُ مُستروِحاً ثعلبٌ</div>
+                    <div class="verse-part">يهيجُ حَشاهُ بمثلِ الضَّرَمِ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">فحيّا الغرابَ وقال له:</div>
+                    <div class="verse-part">"سلامٌ أيُّها الصاحبُ المحترمُ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">لعمري إنك باهرُ شكلٍ</div>
+                    <div class="verse-part">بديعُ الملامحِ من غيرِ ذَمِّ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">وريشُك زاهي الجمالِ</div>
+                    <div class="verse-part">فأنتَ جميلٌ من الرأسِ حتى القدمِ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">فلو أنّ صوتَك ناسبَ ريشَك</div>
+                    <div class="verse-part">حُسناً لكان لك الحُسنُ تَمّ"</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">فأفرجَ منقارَهُ فإذا</div>
+                    <div class="verse-part">بجبنتِه في فمِ أيِّ فَمِ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">فالتقطها ذو الدهاءِ سريعاً</div>
+                    <div class="verse-part">فكانت له من ألذِّ اللُّقَمِ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">فكادَ الغرابُ يذوبُ حياءً</div>
+                    <div class="verse-part">وأنشأ يقرعُ سِنَّ الندمِ</div>
+                </div>
+                <div class="poem-verse" onclick="toggleHighlight(this)">
+                    <div class="verse-part">وأقسمَ أن لن يُملَّقَ بعدُ</div>
+                    <div class="verse-part">ولكن تأخّرَ ذاك القَسَمُ</div>
                 </div>
             </div>
-            <!-- بطاقة 3 -->
-            <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">النَّهَم</div>
-                    <div class="flip-card-back">الرغبة الشديدة في الأكل</div>
+            <div style="text-align: center;">
+                <button class="btn btn-primary" onclick="readPoem()">
+                    🔊 استمع للقصيدة
+                </button>
+            </div>
+        </section>
+
+        <!-- Vocabulary Section -->
+        <section id="vocabulary" class="section">
+            <div class="section-title">
+                <span class="icon">📚</span>
+                <h2>المفردات والتراكيب</h2>
+            </div>
+            <p style="text-align: center; margin-bottom: 20px; color: #64748b;">
+                👆 انقر على الكلمة لمعرفة معناها
+            </p>
+            <div class="vocab-grid">
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">دَوحة</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🌳 شجرة كبيرة ظليلة</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">أوى</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🏠 لجأ واحتمى</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">جَثَم</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🪹 جلس واستقر في مكانه</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">يَهِشّ</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">😊 يفرح ويُسَرّ</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">ذو النَّهَم</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">😋 صاحب الشهية الكبيرة للطعام</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">وافاه</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🚶 جاءه وأتاه</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">مُستروِحاً</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🔍 باحثاً عن الراحة والطعام</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">يهيج حَشاه</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">😫 يثور جوفه من شدة الجوع</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">الضَّرَم</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🔥 اللهب والنار المشتعلة</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">باهر الشكل</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">✨ رائع المظهر وجميله</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">من غير ذَمّ</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">👌 بلا أي عيب</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">زاهي الجمال</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🌟 لامع وبراق الجمال</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">أفرج منقاره</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">👄 فتح منقاره</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">ذو الدهاء</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🦊 صاحب المكر والذكاء (الثعلب)</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">اللُّقَم</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🍽️ اللقمات من الطعام</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">يذوب حياءً</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">😳 يشعر بخجل شديد جداً</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">يقرع سنّ الندم</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">😔 يندم ندماً شديداً</div>
+                </div>
+                <div class="vocab-card" onclick="revealMeaning(this)">
+                    <div class="vocab-word">يُملَّق</div>
+                    <div class="vocab-hint">انقر لمعرفة المعنى</div>
+                    <div class="vocab-meaning">🎭 يُخدع بالتملق والكلام المعسول</div>
                 </div>
             </div>
-            <!-- بطاقة 4 -->
-            <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">الضَّرَم</div>
-                    <div class="flip-card-back">النار (كناية عن الجوع)</div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="revealAllVocab()">
+                    👁️ أظهر جميع المعاني
+                </button>
+            </div>
+        </section>
+
+        <!-- Story Section -->
+        <section id="story" class="section">
+            <div class="section-title">
+                <span class="icon">🎬</span>
+                <h2>مشاهد القصة</h2>
+            </div>
+            <div class="scene-container">
+                <div class="scene active" data-scene="1">
+                    <div class="scene-card">
+                        <div class="scene-number">1</div>
+                        <div class="scene-icon">🐦‍⬛🧀🌳</div>
+                        <h3 class="scene-title">الغراب والجبنة</h3>
+                        <p class="scene-text">
+                            وجد غراب جائع قطعة جبنة لذيذة، فطار بها إلى شجرة كبيرة (دوحة) وجلس على غصنها ليأكلها بهدوء.
+                        </p>
+                        <div class="scene-verse">
+                            إلى دوحةٍ قد أوى مرةً غرابٌ وفي غصنِها قد جثمْ<br>
+                            وكانت بمنقارهِ جبنةٌ يهشُّ إلى أكلِها ذو النهَمِ
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene" data-scene="2">
+                    <div class="scene-card">
+                        <div class="scene-number">2</div>
+                        <div class="scene-icon">🦊👀🔥</div>
+                        <h3 class="scene-title">ظهور الثعلب الجائع</h3>
+                        <p class="scene-text">
+                            مرّ ثعلب ماكر وهو جائع جداً، جوعه كالنار في بطنه! رأى الغراب والجبنة في منقاره، ففكر في حيلة للحصول عليها.
+                        </p>
+                        <div class="scene-verse">
+                            فوافاهُ مُستروِحاً ثعلبٌ يهيجُ حَشاهُ بمثلِ الضَّرَمِ
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene" data-scene="3">
+                    <div class="scene-card">
+                        <div class="scene-number">3</div>
+                        <div class="scene-icon">🦊💬✨</div>
+                        <h3 class="scene-title">التملق والمديح الكاذب</h3>
+                        <p class="scene-text">
+                            بدأ الثعلب الماكر بمدح الغراب مدحاً كبيراً: شكله رائع، ريشه جميل، وجهه بديع! ثم قال له: لو أن صوتك جميل مثل شكلك لكنت أجمل الطيور!
+                        </p>
+                        <div class="scene-verse">
+                            فحيّا الغرابَ وقال له: "سلامٌ أيُّها الصاحبُ المحترمُ<br>
+                            لعمري إنك باهرُ شكلٍ بديعُ الملامحِ من غيرِ ذَمِّ<br>
+                            وريشُك زاهي الجمالِ فأنتَ جميلٌ من الرأسِ حتى القدمِ<br>
+                            فلو أنّ صوتَك ناسبَ ريشَك حُسناً لكان لك الحُسنُ تَمّ"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene" data-scene="4">
+                    <div class="scene-card">
+                        <div class="scene-number">4</div>
+                        <div class="scene-icon">🐦‍⬛🎵😮</div>
+                        <h3 class="scene-title">الغراب ينخدع</h3>
+                        <p class="scene-text">
+                            أعجب الغرابَ هذا المديحُ الكاذب، وأراد أن يُثبت أن صوته جميل أيضاً. فتح منقاره ليغني... وسقطت الجبنة!
+                        </p>
+                        <div class="scene-verse">
+                            فأفرجَ منقارَهُ فإذا بجبنتِه في فمِ أيِّ فَمِ
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene" data-scene="5">
+                    <div class="scene-card">
+                        <div class="scene-number">5</div>
+                        <div class="scene-icon">🦊🧀😋</div>
+                        <h3 class="scene-title">الثعلب يفوز</h3>
+                        <p class="scene-text">
+                            التقط الثعلب الماكر الجبنة بسرعة وأكلها، وكانت من أطيب ما أكل! نجحت خطته الذكية.
+                        </p>
+                        <div class="scene-verse">
+                            فالتقطها ذو الدهاءِ سريعاً فكانت له من ألذِّ اللُّقَمِ
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene" data-scene="6">
+                    <div class="scene-card">
+                        <div class="scene-number">6</div>
+                        <div class="scene-icon">🐦‍⬛😢💭</div>
+                        <h3 class="scene-title">ندم الغراب</h3>
+                        <p class="scene-text">
+                            شعر الغراب بخجل شديد وندم كبير. أقسم ألا ينخدع بالتملق مرة أخرى... لكن بعد فوات الأوان!
+                        </p>
+                        <div class="scene-verse">
+                            فكادَ الغرابُ يذوبُ حياءً وأنشأ يقرعُ سِنَّ الندمِ<br>
+                            وأقسمَ أن لن يُملَّقَ بعدُ ولكن تأخّرَ ذاك القَسَمُ
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- 3. لعبة الترتيب -->
-    <section>
-        <h2>🔢 لعبة ترتيب الأحداث</h2>
-        <p>اضغط على الحدث الصحيح بالترتيب:</p>
-        <div id="game-area"></div>
-        <div id="game-feedback" style="margin-top: 10px; font-weight: bold; height: 30px;"></div>
-        <button class="btn" onclick="initGame()">🔄 إعادة اللعبة</button>
-    </section>
+            <div class="scene-nav">
+                <button class="scene-btn prev" onclick="prevScene()" id="prevBtn">
+                    ◀ السابق
+                </button>
+                <button class="scene-btn next" onclick="nextScene()" id="nextBtn">
+                    التالي ▶
+                </button>
+            </div>
+            <div class="scene-dots" id="sceneDots"></div>
+        </section>
 
-    <!-- 4. الاختبار القصير -->
-    <section>
-        <h2>📝 اختبر فهمك</h2>
-        
-        <div style="margin-bottom: 25px;">
-            <p><strong>1. لماذا مدح الثعلب الغراب؟</strong></p>
-            <button class="quiz-option" onclick="checkQuiz(this, false)">لأنه يحب صوته</button>
-            <button class="quiz-option" onclick="checkQuiz(this, true)">ليجعله يفتح فمه فتسقط الجبنة</button>
-            <button class="quiz-option" onclick="checkQuiz(this, false)">لأنه معجب بريشه الجميل</button>
-        </div>
+        <!-- Characters Section -->
+        <section id="characters" class="section">
+            <div class="section-title">
+                <span class="icon">🎭</span>
+                <h2>شخصيات القصة</h2>
+            </div>
+            <div class="characters-container">
+                <div class="character-card crow">
+                    <div class="character-icon">🐦‍⬛</div>
+                    <h3 class="character-name">الغُراب</h3>
+                    <ul class="traits-list">
+                        <li>😋 <strong>جائع/نَهِم:</strong> "يهشّ إلى أكلها ذو النهم"</li>
+                        <li>😊 <strong>مغرور:</strong> انخدع بكلام المدح</li>
+                        <li>🙈 <strong>ساذج:</strong> صدّق كلام الثعلب بسهولة</li>
+                        <li>😔 <strong>نادم:</strong> "يقرع سنّ الندم"</li>
+                        <li>📍 <strong>الدور:</strong> الضحية المخدوعة</li>
+                    </ul>
+                </div>
+                <div class="character-card fox">
+                    <div class="character-icon">🦊</div>
+                    <h3 class="character-name">الثعلب</h3>
+                    <ul class="traits-list">
+                        <li>🔥 <strong>جائع جداً:</strong> "يهيج حشاه بمثل الضرم"</li>
+                        <li>🧠 <strong>ماكر/ذكي:</strong> "ذو الدهاء"</li>
+                        <li>🎭 <strong>متملق:</strong> استخدم الكلام المعسول</li>
+                        <li>🎯 <strong>صاحب خطة:</strong> نجحت حيلته</li>
+                        <li>📍 <strong>الدور:</strong> المخادع الفائز</li>
+                    </ul>
+                </div>
+            </div>
 
-        <div style="margin-bottom: 25px;">
-            <p><strong>2. ما معنى "يقرع سن الندم"؟</strong></p>
-            <button class="quiz-option" onclick="checkQuiz(this, false)">يشعر بألم في أسنانه</button>
-            <button class="quiz-option" onclick="checkQuiz(this, true)">يشعر بالحسرة والندم الشديد</button>
-            <button class="quiz-option" onclick="checkQuiz(this, false)">يأكل الطعام بسرعة</button>
-        </div>
+            <div style="margin-top: 30px; padding: 25px; background: #f8fafc; border-radius: 15px;">
+                <h3 style="text-align: center; margin-bottom: 20px;">⚖️ مقارنة بين الشخصيتين</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: var(--primary); color: white;">
+                        <th style="padding: 15px; border-radius: 10px 0 0 0;">🐦‍⬛ الغراب</th>
+                        <th style="padding: 15px;">المقارنة</th>
+                        <th style="padding: 15px; border-radius: 0 10px 0 0;">🦊 الثعلب</th>
+                    </tr>
+                    <tr style="background: white;">
+                        <td style="padding: 15px; text-align: center;">ساذج</td>
+                        <td style="padding: 15px; text-align: center;">↔️</td>
+                        <td style="padding: 15px; text-align: center;">ماكر</td>
+                    </tr>
+                    <tr style="background: #f1f5f9;">
+                        <td style="padding: 15px; text-align: center;">مغرور</td>
+                        <td style="padding: 15px; text-align: center;">↔️</td>
+                        <td style="padding: 15px; text-align: center;">متواضع (ظاهرياً)</td>
+                    </tr>
+                    <tr style="background: white;">
+                        <td style="padding: 15px; text-align: center;">ضحية</td>
+                        <td style="padding: 15px; text-align: center;">↔️</td>
+                        <td style="padding: 15px; text-align: center;">مخادع</td>
+                    </tr>
+                    <tr style="background: #f1f5f9;">
+                        <td style="padding: 15px; text-align: center;">خاسر</td>
+                        <td style="padding: 15px; text-align: center;">↔️</td>
+                        <td style="padding: 15px; text-align: center;">رابح</td>
+                    </tr>
+                    <tr style="background: white;">
+                        <td style="padding: 15px; text-align: center; border-radius: 0 0 0 10px;">نادم</td>
+                        <td style="padding: 15px; text-align: center;">↔️</td>
+                        <td style="padding: 15px; text-align: center; border-radius: 0 0 10px 0;">سعيد</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
 
-        <div>
-            <p><strong>3. الحكمة من هذا الدرس هي:</strong></p>
-            <button class="quiz-option" onclick="checkQuiz(this, true)">الحذر من المتملقين وكلامهم المعسول</button>
-            <button class="quiz-option" onclick="checkQuiz(this, false)">أهمية الأكل فوق الأشجار</button>
-        </div>
-    </section>
+        <!-- Activities Section -->
+        <section id="activities" class="section">
+            <div class="section-title">
+                <span class="icon">🎮</span>
+                <h2>أنشطة تفاعلية</h2>
+            </div>
 
-    <!-- 5. مقارنة الشخصيات -->
-    <section>
-        <h2>⚖️ تحليل الشخصيات</h2>
-        <p>اضغط على الزر لتكشف الفرق بين الغراب والثعلب</p>
-        <button class="btn" onclick="revealTable()">اكشف التحليل</button>
-        
-        <table class="comp-table">
-            <thead>
-                <tr>
-                    <th>وجه المقارنة</th>
-                    <th>🐦‍⬛ الغراب</th>
-                    <th>🦊 الثعلب</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="hidden-row">
-                    <td><strong>الصفة البارزة</strong></td>
-                    <td>ساذج ومغرور</td>
-                    <td>ماكر وذكي</td>
-                </tr>
-                <tr class="hidden-row">
-                    <td><strong>الهدف</strong></td>
-                    <td>الاستمتاع بالمدح</td>
-                    <td>الحصول على الجبنة</td>
-                </tr>
-                <tr class="hidden-row">
-                    <td><strong>النهاية</strong></td>
-                    <td>خسر وندم</td>
-                    <td>ربح وفاز</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+            <!-- Activity 1: Ordering -->
+            <div class="activity-card">
+                <h3 class="activity-title">📋 النشاط الأول: رتّب الأحداث</h3>
+                <p style="margin-bottom: 15px; color: #64748b;">اسحب الأحداث لترتيبها حسب وقوعها في القصة</p>
+                <ul class="order-list" id="orderList">
+                    <li class="order-item" draggable="true" data-order="6">
+                        <span class="order-number">؟</span>
+                        <span>ندم الغراب ندماً شديداً</span>
+                    </li>
+                    <li class="order-item" draggable="true" data-order="1">
+                        <span class="order-number">؟</span>
+                        <span>جلس الغراب على الشجرة وبمنقاره جبنة</span>
+                    </li>
+                    <li class="order-item" draggable="true" data-order="4">
+                        <span class="order-number">؟</span>
+                        <span>فتح الغراب منقاره فسقطت الجبنة</span>
+                    </li>
+                    <li class="order-item" draggable="true" data-order="2">
+                        <span class="order-number">؟</span>
+                        <span>جاء الثعلب الجائع</span>
+                    </li>
+                    <li class="order-item" draggable="true" data-order="3">
+                        <span class="order-number">؟</span>
+                        <span>بدأ الثعلب يمدح الغراب</span>
+                    </li>
+                    <li class="order-item" draggable="true" data-order="5">
+                        <span class="order-number">؟</span>
+                        <span>التقط الثعلب الجبنة وأكلها</span>
+                    </li>
+                </ul>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="checkOrder()">✓ تحقق من الترتيب</button>
+                    <button class="btn btn-warning" onclick="resetOrder()">🔄 إعادة</button>
+                </div>
+                <div id="orderFeedback" class="feedback"></div>
+            </div>
 
-</div>
+            <!-- Activity 2: Fill Blanks -->
+            <div class="activity-card">
+                <h3 class="activity-title">✍️ النشاط الثاني: أكمل الفراغات</h3>
+                <div class="fill-blank-sentence">
+                    1. جلس الغراب على 
+                    <input type="text" class="blank-input" data-answer="الشجرة" placeholder="...">
+                    وفي منقاره 
+                    <input type="text" class="blank-input" data-answer="جبنة" placeholder="...">
+                </div>
+                <div class="fill-blank-sentence">
+                    2. الثعلب كان 
+                    <input type="text" class="blank-input" data-answer="جائعاً" placeholder="...">
+                    جداً
+                </div>
+                <div class="fill-blank-sentence">
+                    3. مدح الثعلب 
+                    <input type="text" class="blank-input" data-answer="شكل" placeholder="...">
+                    الغراب و
+                    <input type="text" class="blank-input" data-answer="ريشه" placeholder="...">
+                </div>
+                <div class="fill-blank-sentence">
+                    4. عندما فتح الغراب منقاره 
+                    <input type="text" class="blank-input" data-answer="سقطت" placeholder="...">
+                    الجبنة
+                </div>
+                <div class="fill-blank-sentence">
+                    5. في النهاية شعر الغراب بـ
+                    <input type="text" class="blank-input" data-answer="الندم" placeholder="...">
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="btn btn-success" onclick="checkBlanks()">✓ تحقق من الإجابات</button>
+                </div>
+                <div id="blanksFeedback" class="feedback"></div>
+            </div>
 
-<footer>
-    درس تفاعلي - مادة اللغة العربية <br>
-    تم التصميم بناءً على النص الشعري الوارد في الكتاب
-</footer>
+            <!-- Activity 3: Matching -->
+            <div class="activity-card">
+                <h3 class="activity-title">🔗 النشاط الثالث: صِل بين الكلمة ومعناها</h3>
+                <div class="matching-container">
+                    <div class="matching-column">
+                        <h4>الكلمة</h4>
+                        <div class="matching-item" data-match="1" onclick="selectMatch(this, 'word')">يهيج حشاه</div>
+                        <div class="matching-item" data-match="2" onclick="selectMatch(this, 'word')">باهر الشكل</div>
+                        <div class="matching-item" data-match="3" onclick="selectMatch(this, 'word')">ذو الدهاء</div>
+                        <div class="matching-item" data-match="4" onclick="selectMatch(this, 'word')">يقرع سن الندم</div>
+                    </div>
+                    <div class="matching-column">
+                        <h4>المعنى</h4>
+                        <div class="matching-item" data-match="4" onclick="selectMatch(this, 'meaning')">يندم بشدة</div>
+                        <div class="matching-item" data-match="1" onclick="selectMatch(this, 'meaning')">جوعه الشديد</div>
+                        <div class="matching-item" data-match="3" onclick="selectMatch(this, 'meaning')">الثعلب الماكر</div>
+                        <div class="matching-item" data-match="2" onclick="selectMatch(this, 'meaning')">جميل المظهر</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="btn btn-warning" onclick="resetMatching()">🔄 إعادة</button>
+                </div>
+            </div>
 
-<script>
-    // --- وظيفة إظهار المعاني ---
-    function showDef(word, def) {
-        alert('📖 معنى (' + word + '):\n\n' + def);
-    }
+            <!-- Activity 4: True or False -->
+            <div class="activity-card">
+                <h3 class="activity-title">✅❌ النشاط الرابع: صح أم خطأ</h3>
+                <div id="trueFalseContainer"></div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="checkTrueFalse()">✓ تحقق</button>
+                </div>
+                <div id="tfFeedback" class="feedback"></div>
+            </div>
+        </section>
 
-    // --- منطق لعبة الترتيب ---
-    const correctOrder = [
-        "وقف الغراب على الشجرة وفي فمه جبنة",
-        "جاء الثعلب الجائع ورأى الغراب",
-        "بدأ الثعلب يمدح جمال الغراب وريشه",
-        "طلب الثعلب من الغراب أن يغني",
-        "فتح الغراب فمه فسقطت الجبنة",
-        "أخذ الثعلب الجبنة وندم الغراب"
-    ];
+        <!-- Quiz Section -->
+        <section id="quiz" class="section">
+            <div class="section-title">
+                <span class="icon">✅</span>
+                <h2>اختبر نفسك</h2>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="quizProgress" style="width: 0%">0%</div>
+            </div>
 
-    let currentStep = 0;
+            <div id="quizContainer"></div>
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-success" onclick="submitQuiz()" id="submitQuizBtn">
+                    📊 أظهر النتيجة
+                </button>
+                <button class="btn btn-warning" onclick="resetQuiz()" style="display: none;" id="resetQuizBtn">
+                    🔄 حاول مرة أخرى
+                </button>
+            </div>
+
+            <div id="quizResult" class="score-display" style="display: none;"></div>
+        </section>
+
+        <!-- Lessons Section -->
+        <section id="lessons" class="section">
+            <div class="section-title">
+                <span class="icon">💡</span>
+                <h2>الدروس والعِبَر</h2>
+            </div>
+
+            <div class="lessons-grid">
+                <div class="lesson-card">
+                    <span class="lesson-number">1</span>
+                    <div class="lesson-content">
+                        <h4>لا تنخدع بالمديح المبالغ فيه</h4>
+                        <p>فكّر دائماً: لماذا يمدحني هذا الشخص؟ هل يريد شيئاً مني؟</p>
+                    </div>
+                </div>
+                <div class="lesson-card">
+                    <span class="lesson-number">2</span>
+                    <div class="lesson-content">
+                        <h4>الغرور يُعمي البصيرة</h4>
+                        <p>كن متواضعاً ولا تصدق كل مدح يقال لك</p>
+                    </div>
+                </div>
+                <div class="lesson-card">
+                    <span class="lesson-number">3</span>
+                    <div class="lesson-content">
+                        <h4>التملق وسيلة المخادعين</h4>
+                        <p>تعلّم أن تميز بين المدح الصادق والتملق الكاذب</p>
+                    </div>
+                </div>
+                <div class="lesson-card">
+                    <span class="lesson-number">4</span>
+                    <div class="lesson-content">
+                        <h4>الندم بعد فوات الأوان لا يفيد</h4>
+                        <p>فكّر جيداً قبل أن تتصرف</p>
+                    </div>
+                </div>
+                <div class="lesson-card">
+                    <span class="lesson-number">5</span>
+                    <div class="lesson-content">
+                        <h4>العاقل يتعلم من أخطائه</h4>
+                        <p>لا تكرر الخطأ نفسه مرتين</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: #fef3c7; border-radius: 15px;">
+                <h4 style="margin-bottom: 15px;">⚠️ علامات التملق الكاذب:</h4>
+                <ul style="list-style: none;">
+                    <li style="padding: 8px 0;">❌ المدح مبالغ فيه جداً</li>
+                    <li style="padding: 8px 0;">❌ المدح مفاجئ بدون سبب واضح</li>
+                    <li style="padding: 8px 0;">❌ الشخص يريد منك شيئاً</li>
+                    <li style="padding: 8px 0;">❌ يركز على مظهرك فقط دون أفعالك</li>
+                    <li style="padding: 8px 0;">❌ يجعلك تشعر بالغرور الزائد</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: #f0fdf4; border-radius: 15px;">
+                <h4 style="margin-bottom: 15px;">📜 أمثال عربية مشابهة:</h4>
+                <ul style="list-style: none;">
+                    <li style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 10px;">
+                        💎 "كل ما يلمع ليس ذهباً"
+                    </li>
+                    <li style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 10px;">
+                        💎 "لا يُلدغ المؤمن من جحر مرتين"
+                    </li>
+                    <li style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 10px;">
+                        💎 "المتملق عدو متنكر في ثوب صديق"
+                    </li>
+                    <li style="padding: 10px; background: white; border-radius: 8px;">
+                        💎 "إذا أتتك مدحة من جاهل، فاعلم أنها ذم"
+                    </li>
+                </ul>
+            </div>
+
+            <div class="wisdom-box">
+                <div class="icon">🌟</div>
+                <p class="text">"احذر المتملقين، فإن كلامهم المعسول سُمٌّ في عسل"</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active to clicked tab
+            event.target.closest('.nav-tab').classList.add('active');
+            
+            // Initialize section-specific content
+            if (sectionId === 'story') initStory();
+            if (sectionId === 'quiz') initQuiz();
+            if (sectionId === 'activities') initActivities();
         }
-    }
 
-    function initGame() {
-        currentStep = 0;
-        const gameArea = document.getElementById('game-area');
-        const feedback = document.getElementById('game-feedback');
-        gameArea.innerHTML = '';
-        feedback.textContent = '';
-        feedback.style.color = '#333';
+        // Poem highlighting
+        function toggleHighlight(element) {
+            element.classList.toggle('highlighted');
+        }
 
-        // إنشاء نسخة مبعثرة من الأحداث
-        let shuffledItems = [...correctOrder];
-        shuffleArray(shuffledItems);
-
-        shuffledItems.forEach(item => {
-            let div = document.createElement('div');
-            div.className = 'order-item';
-            div.textContent = item;
-            div.onclick = () => checkOrder(div, item);
-            gameArea.appendChild(div);
-        });
-    }
-
-    function checkOrder(element, text) {
-        if (element.classList.contains('correct')) return; // تم اختياره مسبقاً
-
-        const feedback = document.getElementById('game-feedback');
-
-        if (text === correctOrder[currentStep]) {
-            // إجابة صحيحة
-            element.classList.add('correct');
-            element.innerHTML = '✅ ' + (currentStep + 1) + '. ' + text;
-            feedback.textContent = 'أحسنت! أكمل الترتيب.';
-            feedback.style.color = 'green';
-            currentStep++;
-
-            if (currentStep === correctOrder.length) {
-                feedback.textContent = '🎉 ممتاز! لقد رتبت القصة بالكامل.';
+        // Read poem (text-to-speech)
+        function readPoem() {
+            if ('speechSynthesis' in window) {
+                const verses = document.querySelectorAll('.poem-verse');
+                let text = '';
+                verses.forEach(verse => {
+                    text += verse.textContent + '. ';
+                });
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('عذراً، متصفحك لا يدعم خاصية القراءة الصوتية');
             }
-        } else {
-            // إجابة خاطئة
-            element.classList.add('wrong');
-            feedback.textContent = '❌ ليس هذا الحدث التالي، حاول مرة أخرى!';
-            feedback.style.color = 'red';
-            setTimeout(() => {
-                element.classList.remove('wrong');
-            }, 500);
-        }
-    }
-
-    // --- منطق الاختبار ---
-    function checkQuiz(btn, isCorrect) {
-        // تعطيل الأزرار المجاورة
-        let parent = btn.parentElement;
-        let buttons = parent.getElementsByTagName('button');
-        for(let b of buttons) {
-            b.disabled = true;
-            b.style.cursor = 'default';
         }
 
-        if(isCorrect) {
-            btn.classList.add('correct');
-            btn.innerHTML += " ✅ (إجابة صحيحة)";
-        } else {
-            btn.classList.add('wrong');
-            btn.innerHTML += " ❌ (إجابة خاطئة)";
-            // البحث عن الإجابة الصحيحة وتلوينها
-            for(let b of buttons) {
-                if(b.onclick.toString().includes('true')) {
-                    b.classList.add('correct');
+        // Vocabulary reveal
+        function revealMeaning(card) {
+            card.classList.toggle('revealed');
+        }
+
+        function revealAllVocab() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.classList.add('revealed');
+            });
+        }
+
+        // Story scenes
+        let currentScene = 1;
+        const totalScenes = 6;
+
+        function initStory() {
+            updateSceneNav();
+            createSceneDots();
+        }
+
+        function showScene(num) {
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.classList.remove('active');
+            });
+            document.querySelector(`.scene[data-scene="${num}"]`).classList.add('active');
+            currentScene = num;
+            updateSceneNav();
+            updateSceneDots();
+        }
+
+        function nextScene() {
+            if (currentScene < totalScenes) {
+                showScene(currentScene + 1);
+            }
+        }
+
+        function prevScene() {
+            if (currentScene > 1) {
+                showScene(currentScene - 1);
+            }
+        }
+
+        function updateSceneNav() {
+            document.getElementById('prevBtn').disabled = currentScene === 1;
+            document.getElementById('nextBtn').disabled = currentScene === totalScenes;
+        }
+
+        function createSceneDots() {
+            const dotsContainer = document.getElementById('sceneDots');
+            dotsContainer.innerHTML = '';
+            for (let i = 1; i <= totalScenes; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'scene-dot' + (i === 1 ? ' active' : '');
+                dot.onclick = () => showScene(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateSceneDots() {
+            document.querySelectorAll('.scene-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index + 1 === currentScene);
+            });
+        }
+
+        // Activities
+        function initActivities() {
+            initDragDrop();
+            initTrueFalse();
+        }
+
+        // Drag and drop ordering
+        function initDragDrop() {
+            const items = document.querySelectorAll('.order-item');
+            items.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+            });
+        }
+
+        let draggedItem = null;
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            this.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            if (this !== draggedItem) {
+                const list = this.parentNode;
+                const items = Array.from(list.children);
+                const draggedIndex = items.indexOf(draggedItem);
+                const droppedIndex = items.indexOf(this);
+                
+                if (draggedIndex < droppedIndex) {
+                    list.insertBefore(draggedItem, this.nextSibling);
+                } else {
+                    list.insertBefore(draggedItem, this);
                 }
             }
         }
-    }
 
-    // --- منطق الجدول ---
-    function revealTable() {
-        let rows = document.querySelectorAll('.hidden-row');
-        rows.forEach((row, index) => {
-            setTimeout(() => {
-                row.classList.add('visible-row');
-            }, index * 400); // تأخير زمني بين كل صف
+        function checkOrder() {
+            const items = document.querySelectorAll('.order-item');
+            let correct = 0;
+            items.forEach((item, index) => {
+                const expectedOrder = index + 1;
+                const actualOrder = parseInt(item.dataset.order);
+                item.querySelector('.order-number').textContent = index + 1;
+                
+                if (expectedOrder === actualOrder) {
+                    item.classList.remove('incorrect');
+                    item.classList.add('correct');
+                    correct++;
+                } else {
+                    item.classList.remove('correct');
+                    item.classList.add('incorrect');
+                }
+            });
+
+            const feedback = document.getElementById('orderFeedback');
+            if (correct === 6) {
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = '🎉 ممتاز! جميع الإجابات صحيحة!';
+            } else {
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `حاول مرة أخرى! حصلت على ${correct} من 6`;
+            }
+        }
+
+        function resetOrder() {
+            const list = document.getElementById('orderList');
+            const items = Array.from(list.children);
+            
+            // Shuffle
+            for (let i = items.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                list.appendChild(items[j]);
+            }
+            
+            document.querySelectorAll('.order-item').forEach(item => {
+                item.classList.remove('correct', 'incorrect');
+                item.querySelector('.order-number').textContent = '؟';
+            });
+            
+            document.getElementById('orderFeedback').className = 'feedback';
+        }
+
+        // Fill blanks
+        function checkBlanks() {
+            const inputs = document.querySelectorAll('.blank-input');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                const userAnswer = input.value.trim();
+                const correctAnswer = input.dataset.answer;
+                
+                if (userAnswer === correctAnswer || 
+                    userAnswer === correctAnswer.replace('ال', '') ||
+                    'ال' + userAnswer === correctAnswer) {
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                    correct++;
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('incorrect');
+                }
+            });
+
+            const feedback = document.getElementById('blanksFeedback');
+            const total = inputs.length;
+            if (correct === total) {
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = '🎉 ممتاز! جميع الإجابات صحيحة!';
+            } else {
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `حصلت على ${correct} من ${total}. حاول مرة أخرى!`;
+            }
+        }
+
+        // Matching game
+        let selectedWord = null;
+        let selectedMeaning = null;
+        let matchedPairs = 0;
+
+        function selectMatch(element, type) {
+            if (element.classList.contains('matched')) return;
+
+            if (type === 'word') {
+                if (selectedWord) selectedWord.classList.remove('selected');
+                selectedWord = element;
+                element.classList.add('selected');
+            } else {
+                if (selectedMeaning) selectedMeaning.classList.remove('selected');
+                selectedMeaning = element;
+                element.classList.add('selected');
+            }
+
+            if (selectedWord && selectedMeaning) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            if (selectedWord.dataset.match === selectedMeaning.dataset.match) {
+                selectedWord.classList.remove('selected');
+                selectedWord.classList.add('matched');
+                selectedMeaning.classList.remove('selected');
+                selectedMeaning.classList.add('matched');
+                matchedPairs++;
+                
+                if (matchedPairs === 4) {
+                    setTimeout(() => {
+                        alert('🎉 أحسنت! أكملت جميع المطابقات بنجاح!');
+                    }, 300);
+                }
+            } else {
+                selectedWord.classList.remove('selected');
+                selectedMeaning.classList.remove('selected');
+            }
+            
+            selectedWord = null;
+            selectedMeaning = null;
+        }
+
+        function resetMatching() {
+            document.querySelectorAll('.matching-item').forEach(item => {
+                item.classList.remove('selected', 'matched');
+            });
+            selectedWord = null;
+            selectedMeaning = null;
+            matchedPairs = 0;
+        }
+
+        // True or False
+        const trueFalseQuestions = [
+            { text: "الغراب كان يحمل تفاحة في منقاره", answer: false },
+            { text: "الثعلب كان جائعاً جداً", answer: true },
+            { text: "مدح الثعلب صوت الغراب", answer: false },
+            { text: "سقطت الجبنة عندما فتح الغراب منقاره", answer: true },
+            { text: "الغراب لم يندم على ما حدث", answer: false }
+        ];
+
+        function initTrueFalse() {
+            const container = document.getElementById('trueFalseContainer');
+            container.innerHTML = '';
+            
+            trueFalseQuestions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;';
+                div.innerHTML = `
+                    <span>${index + 1}. ${q.text}</span>
+                    <div>
+                        <label style="margin-left: 15px; cursor: pointer;">
+                            <input type="radio" name="tf${index}" value="true"> ✅ صح
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="tf${index}" value="false"> ❌ خطأ
+                        </label>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkTrueFalse() {
+            let correct = 0;
+            trueFalseQuestions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="tf${index}"]:checked`);
+                if (selected && (selected.value === 'true') === q.answer) {
+                    correct++;
+                }
+            });
+
+            const feedback = document.getElementById('tfFeedback');
+            if (correct === trueFalseQuestions.length) {
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = '🎉 ممتاز! جميع الإجابات صحيحة!';
+            } else {
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `حصلت على ${correct} من ${trueFalseQuestions.length}`;
+            }
+        }
+
+        // Quiz
+        const quizQuestions = [
+            {
+                question: '"دوحة" تعني:',
+                options: ['نهر', 'شجرة كبيرة', 'جبل', 'بيت'],
+                correct: 1
+            },
+            {
+                question: 'مدح الثعلب الغراب لأنه:',
+                options: ['يحبه', 'معجب به حقاً', 'يريد الجبنة', 'يريد صداقته'],
+                correct: 2
+            },
+            {
+                question: '"ذو الدهاء" يُقصد به:',
+                options: ['الغراب', 'الثعلب', 'الشجرة', 'الجبنة'],
+                correct: 1
+            },
+            {
+                question: 'العبرة من القصة:',
+                options: ['الثعالب أذكى من الغربان', 'لا تأكل الجبن على الأشجار', 'احذر من المتملقين', 'الغناء مضر'],
+                correct: 2
+            },
+            {
+                question: '"يقرع سن الندم" تعني:',
+                options: ['يأكل بسرعة', 'يندم بشدة', 'يغني بصوت عالٍ', 'يطير بعيداً'],
+                correct: 1
+            },
+            {
+                question: 'ماذا كان يحمل الغراب في منقاره؟',
+                options: ['تفاحة', 'خبزاً', 'جبنة', 'لحماً'],
+                correct: 2
+            },
+            {
+                question: 'أين جلس الغراب؟',
+                options: ['على صخرة', 'على الأرض', 'على غصن شجرة', 'قرب النهر'],
+                correct: 2
+            },
+            {
+                question: 'كيف كان جوع الثعلب؟',
+                options: ['خفيفاً', 'متوسطاً', 'شديداً كالنار', 'لم يكن جائعاً'],
+                correct: 2
+            }
+        ];
+
+        let userAnswers = [];
+
+        function initQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+            userAnswers = new Array(quizQuestions.length).fill(-1);
+
+            quizQuestions.forEach((q, qIndex) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question';
+                questionDiv.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">${qIndex + 1}</span>
+                        <span class="question-text">${q.question}</span>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, oIndex) => `
+                            <div class="option" onclick="selectOption(${qIndex}, ${oIndex}, this)">
+                                <span class="option-letter">${['أ', 'ب', 'ج', 'د'][oIndex]}</span>
+                                <span>${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback${qIndex}"></div>
+                `;
+                container.appendChild(questionDiv);
+            });
+
+            document.getElementById('submitQuizBtn').style.display = 'inline-flex';
+            document.getElementById('resetQuizBtn').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'none';
+            updateProgress();
+        }
+
+        function selectOption(qIndex, oIndex, element) {
+            // Remove selected from siblings
+            element.parentNode.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            userAnswers[qIndex] = oIndex;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== -1).length;
+            const percent = Math.round((answered / quizQuestions.length) * 100);
+            const progressBar = document.getElementById('quizProgress');
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = percent + '%';
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            
+            quizQuestions.forEach((q, qIndex) => {
+                const options = document.querySelectorAll(`.quiz-question:nth-child(${qIndex + 1}) .option`);
+                const feedback = document.getElementById(`feedback${qIndex}`);
+                
+                options.forEach((opt, oIndex) => {
+                    opt.style.pointerEvents = 'none';
+                    if (oIndex === q.correct) {
+                        opt.classList.add('correct');
+                    }
+                    if (oIndex === userAnswers[qIndex] && oIndex !== q.correct) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+                if (userAnswers[qIndex] === q.correct) {
+                    score++;
+                    feedback.className = 'feedback show correct';
+                    feedback.innerHTML = '✅ إجابة صحيحة!';
+                } else if (userAnswers[qIndex] === -1) {
+                    feedback.className = 'feedback show incorrect';
+                    feedback.innerHTML = '⚠️ لم تجب على هذا السؤال';
+                } else {
+                    feedback.className = 'feedback show incorrect';
+                    feedback.innerHTML = '❌ إجابة خاطئة';
+                }
+            });
+
+            showResult(score);
+        }
+
+        function showResult(score) {
+            const total = quizQuestions.length;
+            const percent = Math.round((score / total) * 100);
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percent === 100) {
+                message = 'ممتاز! أداء رائع!';
+                emoji = '🏆';
+            } else if (percent >= 80) {
+                message = 'جيد جداً! أحسنت!';
+                emoji = '🌟';
+            } else if (percent >= 60) {
+                message = 'جيد! يمكنك التحسن';
+                emoji = '👍';
+            } else if (percent >= 40) {
+                message = 'تحتاج لمزيد من المراجعة';
+                emoji = '📚';
+            } else {
+                message = 'حاول مرة أخرى!';
+                emoji = '💪';
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.innerHTML = `
+                <div class="score-circle">
+                    <span class="score-number">${score}/${total}</span>
+                    <span class="score-label">${percent}%</span>
+                </div>
+                <div class="score-message">${emoji} ${message}</div>
+            `;
+            resultDiv.style.display = 'block';
+
+            document.getElementById('submitQuizBtn').style.display = 'none';
+            document.getElementById('resetQuizBtn').style.display = 'inline-flex';
+        }
+
+        function resetQuiz() {
+            initQuiz();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initStory();
         });
-    }
-
-    // تشغيل اللعبة عند التحميل
-    window.onload = initGame;
-</script>
-
+    </script>
 </body>
 </html>
-```
