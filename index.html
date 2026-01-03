@@ -3,521 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الدرس التفاعلي: الغراب والثعلب</title>
+    <title>درس تفاعلي: الغراب والثعلب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --accent-color: #e67e22;
+            --bg-color: #f4f7f6;
+            --white: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
             color: #333;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 20px 0;
             text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .header h1 {
-            color: #4a5568;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .section {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-        }
-
-        .section h2 {
-            color: #5a67d8;
-            border-bottom: 3px solid #5a67d8;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .poem {
-            background: linear-gradient(to right, #fef5e7, #fae5d3);
-            padding: 25px;
-            border-radius: 10px;
-            border-right: 5px solid #f39c12;
-            font-size: 1.2em;
-            line-height: 2;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .poem .verse {
-            margin: 15px 0;
-            padding: 10px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 5px;
-        }
-
-        .vocabulary {
-            background: #e8f4f8;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-right: 4px solid #3498db;
-        }
-
-        .vocabulary h3 {
-            color: #2980b9;
-            margin-bottom: 10px;
-        }
-
-        .vocabulary-item {
-            background: white;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 5px;
-            border-right: 3px solid #3498db;
-        }
-
-        .analysis {
-            background: #f0f4f8;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-right: 4px solid #27ae60;
-        }
-
-        .analysis h3 {
-            color: #27ae60;
-            margin-bottom: 10px;
-        }
-
-        .quiz {
-            background: #fff3cd;
-            padding: 20px;
-            border-radius: 10px;
-            border-right: 5px solid #ffc107;
-        }
-
-        .question {
-            background: white;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .question h4 {
-            color: #856404;
-            margin-bottom: 10px;
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        .options {
+        /* Tabs Styling */
+        .tabs {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
         }
 
-        .option {
-            padding: 10px;
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 5px;
+        .tab-btn {
+            padding: 12px 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .option:hover {
-            background: #e9ecef;
-            border-color: #ffc107;
-        }
-
-        .option.selected {
-            background: #fff3cd;
-            border-color: #ffc107;
-        }
-
-        .option.correct {
-            background: #d4edda;
-            border-color: #28a745;
-        }
-
-        .option.incorrect {
-            background: #f8d7da;
-            border-color: #dc3545;
-        }
-
-        .btn {
-            background: #5a67d8;
-            color: white;
-            padding: 12px 30px;
             border: none;
-            border-radius: 25px;
-            font-size: 1.1em;
-            cursor: pointer;
-            margin: 10px;
-            transition: all 0.3s ease;
+            background: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+            transition: 0.3s;
         }
 
-        .btn:hover {
-            background: #4c51bf;
-            transform: scale(1.05);
+        .tab-btn.active {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--secondary-color);
         }
 
-        .result {
-            background: #d1ecf1;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
+        .tab-content {
             display: none;
-            border-right: 4px solid #0c5460;
+            animation: fadeIn 0.5s;
         }
 
-        .objectives {
-            background: #e8f8f5;
-            padding: 15px;
-            border-radius: 8px;
-            border-right: 4px solid #1abc9c;
+        .tab-content.active {
+            display: block;
         }
 
-        .objectives ul {
-            list-style: none;
-            padding: 0;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .objectives li {
-            padding: 8px 0;
-            border-bottom: 1px solid #d1f2eb;
+        /* Content Styling */
+        .poem-box {
+            background: #fff9f0;
+            padding: 30px;
+            border-right: 5px solid var(--accent-color);
+            font-family: 'Amiri', serif;
+            font-size: 1.4rem;
+            line-height: 2;
+            text-align: center;
         }
 
-        .objectives li:before {
-            content: "✓ ";
-            color: #1abc9c;
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .vocab-table th, .vocab-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+
+        .vocab-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .highlight {
+            color: #d35400;
             font-weight: bold;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
-            .container {
-                padding: 10px;
-            }
-            
-            .section {
-                padding: 15px;
-            }
+        /* Quiz Styling */
+        .quiz-container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            padding: 10px;
+            background: #eee;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            background: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 15px;
+            display: none;
+            border-radius: 5px;
+        }
+
+        /* Objectives Section */
+        .card {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>الدرس التفاعلي: الغراب والثعلب</h1>
-            <p>حكاية من أوروبا - دروس في الأدب والحكمة</p>
-        </div>
 
-        <!-- المقدمة -->
-        <div class="section">
-            <h2>📚 المقدمة</h2>
-            <p>
-                هذه القصيدة هي حكاية شعرية تنتمي إلى الأدب العالمي، تروي قصة كلاسيكية عن مكر الثعلب وغرور الغراب. 
-                تُعدّ من القصص القصيرة المشهورة التي تحمل في طياتها حكمة عميقة تُعلّمنا درسًا في الحذر من المدح 
-                المغرض والفخر الزائد. تُرجمت هذه الحكاية إلى العربية بأسلوب شعري فصيح يحافظ على معانيها الأصلية 
-                ويضفي عليها جمالية اللغة العربية.
-            </p>
-        </div>
+<header>
+    <h1>قصيدة الغراب والثعلب</h1>
+    <p>درس تفاعلي في الأدب والحكمة</p>
+</header>
 
-        <!-- القصيدة -->
-        <div class="section">
-            <h2>📝 القصيدة</h2>
-            <div class="poem">
-                <div class="verse">إلى دوحةٍ قد أوى مرةً غرابٌ وفي غصنِها قد جثمْ</div>
-                <div class="verse">وكانت بمنقارهِ جبنةٌ يهشُّ إلى أكلِها ذو النهمِ</div>
-                <div class="verse">فوافاهُ مستروحًا ثعلبٌ يهيجُ حشاهُ بمثلِ الضرَمِ</div>
-                <div class="verse">فحيّا الغرابَ وقال له: "سلامٌ أيّها الصاحبُ المحترمُ</div>
-                <div class="verse">لعمري إنك باهرُ شكلٍ بديعُ الملامحِ من غيرِ ذمِّ</div>
-                <div class="verse">وريشك زاهي الجمالِ فأنتَ جميلٌ من الرأسِ حتى القدمِ</div>
-                <div class="verse">فلو أن صوتك ناسبَ ريشك حسنًا لكان لك الحُسنُ تمُّ"</div>
-                <div class="verse">فأفرج منقارهُ فإذا بجبنته في فمِ أيٍّ فَمِ</div>
-                <div class="verse">فالتقطها ذو الدهاءِ سريعًا فكانت له من ألذِّ اللُّقَمِ</div>
-                <div class="verse">فكاد الغرابُ يذوبُ حياءً وأنشأ يقرعُ سنَّ الندمِ</div>
-                <div class="verse">وأقسمَ أن لن يملق بعدُ ولكن تأخّرَ ذاك القسمِ</div>
-            </div>
-        </div>
+<div class="container">
+    <!-- Tabs Menu -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'intro')">المقدمة</button>
+        <button class="tab-btn" onclick="openTab(event, 'poem')">القصيدة</button>
+        <button class="tab-btn" onclick="openTab(event, 'explanation')">الشرح والمفردات</button>
+        <button class="tab-btn" onclick="openTab(event, 'analysis')">التحليل الأدبي</button>
+        <button class="tab-btn" onclick="openTab(event, 'values')">الأهداف والقيم</button>
+        <button class="tab-btn" onclick="openTab(event, 'quiz')">اختبر نفسك</button>
+    </div>
 
-        <!-- شرح الأبيات -->
-        <div class="section">
-            <h2>🔍 شرح الأبيات والمفردات</h2>
-            
-            <div class="vocabulary">
-                <h3>أبرز المفردات الاختبارية:</h3>
-                <div class="vocabulary-item">
-                    <strong>جثم:</strong> جلس واستقر على شيء (جثم الطائر على غصن)
-                </div>
-                <div class="vocabulary-item">
-                    <strong>يهشّ:</strong> يتطلع بشوق ويرغب في الحصول عليه
-                </div>
-                <div class="vocabulary-item">
-                    <strong>ذو النهم:</strong> صاحب الشهية المفتوحة للطعام
-                </div>
-                <div class="vocabulary-item">
-                    <strong>مستروحًا:</strong> قادمًا من ناحية الريح (ليكتري الغراب)
-                </div>
-                <div class="vocabulary-item">
-                    <strong>يهيج حشاه:</strong> يحرّك جوفه ويثير شهيته
-                </div>
-                <div class="vocabulary-item">
-                    <strong>الضرم:</strong> الجوع الشديد والحاجة إلى الطعام
-                </div>
-                <div class="vocabulary-item">
-                    <strong>باهر شكل:</strong> ذو منظر جميل يبهر الناظرين
-                </div>
-                <div class="vocabulary-item">
-                    <strong>أفرج منقاره:</strong> فتح منقاره وتحرّر منه الجبنة
-                </div>
-                <div class="vocabulary-item">
-                    <strong>ذو الدهاء:</strong> صاحب المكر والحيلة (الثعلب)
-                </div>
-                <div class="vocabulary-item">
-                    <strong>يقرع سنّ الندم:</strong> يعضّ على أصابع الندم والأسف
-                </div>
-            </div>
+    <!-- Tab Content: Intro -->
+    <div id="intro" class="tab-content active">
+        <h2>1. مقدمة</h2>
+        <p>تعد حكاية <strong>"الغراب والثعلب"</strong> من أشهر القصص الرمزية التي ترد على ألسنة الحيوانات. تعود أصولها إلى الأدب العالمي (لافونتين وإيسوب)، وتهدف إلى تقديم موعظة أخلاقية بأسلوب قصصي شيق، محذرةً من عواقب الاغترار بالمديح الكاذب.</p>
+    </div>
 
-            <div class="analysis">
-                <h3>شرح الأبيات:</h3>
-                <p><strong>البيت الأول:</strong> يصوّر لنا مشهد الغراب وهو يجلس على غصن شجرة (دوحة) وقد استقر مكانه.</p>
-                <p><strong>البيت الثاني:</strong> يكشف عن السبب وراء اهتمام الغراب، فهو يحمل جبنة في منقاره يتطلع إلى أكلها.</p>
-                <p><strong>البيت الثالث:</strong> يدخل الثعلب المشهد، قادمًا من ناحية الريح ليُخفي رائحته، وجوعه يحرّك أحشاءه.</p>
-                <p><strong>البيتان الرابع والخامس والسادس:</strong> يبدأ الثعلب في مخططه بإطراء الغراب ومده بكلمات المدح الزائف.</p>
-                <p><strong>البيت السابع:</strong> يكمل الثعلب مدحه ويذكر أن الصوت وحده هو النقص الوحيد.</p>
-                <p><strong>البيت الثامن:</strong> ينخدع الغراب ويفتح منقاره ليغني، فتسقط الجبنة.</p>
-                <p><strong>البيت التاسع:</strong> ينقض الثعلب على الجبنة ويأكلها بسرعة.</p>
-                <p><strong>البيت العاشر:</strong> يشعر الغراب بالخجل والندم الشديد.</p>
-                <p><strong>البيت الحادي عشر:</strong> يحلف الغراب ألا يغتر بالمدح مرة أخرى، لكن الدرس جاء متأخرًا.</p>
-            </div>
-        </div>
-
-        <!-- التحليل الأدبي -->
-        <div class="section">
-            <h2>🎨 التحليل الأدبي</h2>
-            
-            <div class="analysis">
-                <h3>تحليل أدبي شامل:</h3>
-                <p><strong>البنية الفنية:</strong> القصيدة مبنية على نظام شعري مرسل (نثر شعري) يعتمد على الوزن والقافية بشكل مرن.</p>
-                
-                <p><strong>الصور البيانية:</strong></p>
-                <ul style="margin-right: 20px;">
-                    <li>صورة بصرية: "في غصنِها قد جثمْ" - تصوير حركة الجلوس والاستقرار</li>
-                    <li>صورة حسية: "يهيجُ حشاهُ بمثلِ الضرَمِ" - توصيل شعور الجوع</li>
-                    <li>كناية: "يقرعُ سنَّ الندمِ" - التعبير عن ندم شديد بالعض على الأصابع</li>
-                </ul>
-
-                <p><strong>الأسلوب:</strong> أسلوب سردي حكائي يجمع بين:</p>
-                <ul style="margin-right: 20px;">
-                    <li>الحوار: كلام الثعلب المخادع مع الغراب</li>
-                    <li>الوصف: وصف الغراب والثعلب والمشهد الطبيعي</li>
-                    <li>السرد: تتبع تسلسل الأحداث بشكل منطقي</li>
-                </ul>
-
-                <p><strong>الإيقاع:</strong> يعتمد على التوازي اللفظي والموسيقى الداخلية كما في: "سلامٌ أيّها الصاحبُ المحترمُ"</p>
-
-                <p><strong>الشخصيات:</strong></p>
-                <ul style="margin-right: 20px;">
-                    <li>الغراب: يمثل الغرور والسذاجة</li>
-                    <li>الثعلب: يمثل المكر والدهاء</li>
-                </ul>
-
-                <p><strong>الزمان والمكان:</strong> زمان غير محدد (مرّة) ومكان طبيعي (دوحة - غصن) يمثلان المسرح الحكائي.</p>
-            </div>
-        </div>
-
-        <!-- الاختبار -->
-        <div class="section quiz">
-            <h2>📝 اختبار الدرس</h2>
-            <p style="margin-bottom: 20px;">اختر الإجابة الصحيحة لكل سؤال:</p>
-
-            <div class="question" data-answer="b">
-                <h4>1. ما معنى كلمة "جثم" في البيت الأول؟</h4>
-                <div class="options">
-                    <div class="option" data-value="a">طار</div>
-                    <div class="option" data-value="b">استقر وجلس</div>
-                    <div class="option" data-value="c">نام</div>
-                    <div class="option" data-value="d">غنى</div>
-                </div>
-            </div>
-
-            <div class="question" data-answer="c">
-                <h4>2. لماذا أتى الثعلب "مستروحًا"؟</h4>
-                <div class="options">
-                    <div class="option" data-value="a">لأنه كان يجري مسرعًا</div>
-                    <div class="option" data-value="b">لأنه كان يبحث عن مأوى</div>
-                    <div class="option" data-value="c">لكي لا يشعر الغراب برائحته</div>
-                    <div class="option" data-value="d">لأنه كان يتبع ريح الطعام</div>
-                </div>
-            </div>
-
-            <div class="question" data-answer="a">
-                <h4>3. ما الحيلة التي استخدمها الثعلب للحصول على الجبنة؟</h4>
-                <div class="options">
-                    <div class="option" data-value="a">المدح والإطراء الزائف</div>
-                    <div class="option" data-value="b">التهديد والوعيد</div>
-                    <div class="option" data-value="c">الرجاء والتوسل</div>
-                    <div class="option" data-value="d">الشراء والمقايضة</div>
-                </div>
-            </div>
-
-            <div class="question" data-answer="d">
-                <h4>4. ما القيمة الأدبية التي تظهر في عبارة "يقرع سنّ الندم"؟</h4>
-                <div class="options">
-                    <div class="option" data-value="a">تشبيه</div>
-                    <div class="option" data-value="b">استعارة</div>
-                    <div class="option" data-value="c">مجاز مرسل</div>
-                    <div class="option" data-value="d">كناية</div>
-                </div>
-            </div>
-
-            <div class="question" data-answer="b">
-                <h4>5. ما هو الدرس المستفاد من القصيدة؟</h4>
-                <div class="options">
-                    <div class="option" data-value="a">ضرورة التعاون بين الحيوانات</div>
-                    <div class="option" data-value="b">الحذر من المدح المغرض والغرور</div>
-                    <div class="option" data-value="c">أهمية الغناء في الطبيعة</div>
-                    <div class="option" data-value="d">ضرورة مشاركة الطعام مع الآخرين</div>
-                </div>
-            </div>
-
-            <div style="text-align: center;">
-                <button class="btn" onclick="checkAnswers()">تحقق من الإجابات</button>
-                <button class="btn" onclick="resetQuiz()">إعادة الاختبار</button>
-            </div>
-
-            <div class="result" id="quizResult"></div>
-        </div>
-
-        <!-- الأهداف والقيم -->
-        <div class="section">
-            <h2>🎯 الأهداف والقيم</h2>
-            
-            <div class="objectives">
-                <h3>الأهداف التعليمية:</h3>
-                <ul>
-                    <li>فهم معاني المفردات الشعرية والحكائية</li>
-                    <li>تحليل البناء الفني للقصيدة والصور البيانية</li>
-                    <li>تمييز الشخصيات وتأثيرها في الحكاية</li>
-                    <li>استخلاص القيم والعبر من النص الأدبي</li>
-                </ul>
-            </div>
-
-            <div class="objectives" style="margin-top: 20px;">
-                <h3>القيم والعبر:</h3>
-                <ul>
-                    <li>الحذر من الغرور والفخر الزائف</li>
-                    <li>عدم الانسياق وراء المدح المغرض والكلام المعسول</li>
-                    <li>ضرورة التفكير قبل الإقدام على أي عمل</li>
-                    <li>أن المكر والخديعة لا تدوم</li>
-                    <li>الاعتراف بالخطأ والندم عليه</li>
-                    <li>أهمية الحكمة والتعقل في المواقف الحرجة</li>
-                </ul>
-            </div>
+    <!-- Tab Content: Poem -->
+    <div id="poem" class="tab-content">
+        <h2>2. أبيات القصيدة</h2>
+        <div class="poem-box">
+            إلى دوحةٍ قد أوى مرة .. غرابٌ وفي غصنِها قد جثمْ<br>
+            وكانت بمنقارهِ جبنةٌ .. يهش إلى أكلِها ذو النهم<br>
+            فوافاهُ مستروحًا ثعلبٌ .. يهيجُ حشاهُ بمثلِ الضرَمِ<br>
+            فحيّا الغرابَ وقال له: .. "سلامٌ أيّها الصاحبُ المحترمُ"<br>
+            لعمري إنك باهرُ شكلٍ .. بديعُ الملامحِ من غيرِ ذمّ<br>
+            وريشك زاهي الجمالِ .. فأنتَ جميلٌ من الرأسِ حتى القدمِ<br>
+            فلو أن صوتك ناسبَ ريشك حسنًا .. لكان لك الحُسنُ تمّ"<br>
+            فأفرج منقارهُ فإذا بجبنته .. في فمِ أيٍّ فَمِ<br>
+            فالتقطها ذو الدهاءِ سريعًا .. فكانت له من ألذِّ اللُّقَمِ<br>
+            فكاد الغرابُ يذوبُ حياءً .. وأنشأ يقرعُ سنَّ الندمِ<br>
+            وأقسمَ أن لن يملق بعدُ .. ولكن تأخّرَ ذاك القسمِ
         </div>
     </div>
 
-    <script>
-        // تفاعلية الاختبار
-        document.querySelectorAll('.option').forEach(option => {
-            option.addEventListener('click', function() {
-                const question = this.closest('.question');
-                question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
+    <!-- Tab Content: Explanation -->
+    <div id="explanation" class="tab-content">
+        <h2>3. شرح الأبيات وأهم المفردات</h2>
+        <h3>أهم المفردات (تكرر في الاختبارات):</h3>
+        <table class="vocab-table">
+            <tr>
+                <th>الكلمة</th>
+                <th>المعنى</th>
+            </tr>
+            <tr><td>دوحة</td><td>شجرة عظيمة متسعة</td></tr>
+            <tr><td>جثم</td><td>لزق بالأرض أو الغصن (ثبت في مكانه)</td></tr>
+            <tr><td>يهش</td><td>يفرح ويستبشر</td></tr>
+            <tr><td>الضرم</td><td>النار المشتعلة (كناية عن شدة الجوع)</td></tr>
+            <tr><td>باهر</td><td>مدهش ومثير للإعجاب</td></tr>
+            <tr><td>الدهاء</td><td>الذكاء والمكر</td></tr>
+            <tr><td>يملق</td><td>يتذلل أو يخدع بالثناء الكاذب</td></tr>
+            <tr><td>يقرع سن الندم</td><td>تعبير عن شدة الحسرة</td></tr>
+        </table>
+        
+        <h3>شرح موجز:</h3>
+        <p>استقر غراب فوق شجرة ومعه قطعة جبن، فجاء ثعلب جائع وأراد الحصول عليها بالمكر. بدأ يمدح ريش الغراب وجماله، ثم ادعى أن صوته لابد أن يكون جميلاً، فما إن فتح الغراب فمه ليغني حتى سقطت الجبنة فأخذها الثعلب، وترك الغراب نادماً على غبائه.</p>
+    </div>
 
-        function checkAnswers() {
-            const questions = document.querySelectorAll('.question');
-            let score = 0;
-            let total = questions.length;
+    <!-- Tab Content: Analysis -->
+    <div id="analysis" class="tab-content">
+        <h2>4. التحليل الأدبي</h2>
+        <ul>
+            <li><strong>الأسلوب:</strong> اعتمد الشاعر أسلوب "الحكاية على ألسنة الحيوان" (Fable) لتقريب المعنى.</li>
+            <li><strong>الصور الجمالية:</strong>
+                <br>- <span class="highlight">"يهيج حشاه بمثل الضرم":</span> تشبيه للجوع بالنار المشتعلة للدلالة على القوة.
+                <br>- <span class="highlight">"يذوب حياءً":</span> استعارة مكنية تصور الحياء مادة تذيب الغراب، للدلالة على شدة الخجل.
+                <br>- <span class="highlight">"يقرع سن الندم":</span> كناية عن شدة الحسرة.
+            </li>
+            <li><strong>العاطفة:</strong> تنوعت بين (الإعجاب المزيف من الثعلب) و (الغرور من الغراب) ثم (الحسرة والندم).</li>
+        </ul>
+    </div>
 
-            questions.forEach(question => {
-                const selected = question.querySelector('.option.selected');
-                const correctAnswer = question.getAttribute('data-answer');
-                
-                question.querySelectorAll('.option').forEach(opt => {
-                    opt.style.pointerEvents = 'none';
-                    if (opt.getAttribute('data-value') === correctAnswer) {
-                        opt.classList.add('correct');
-                    } else if (opt.classList.contains('selected') && opt.getAttribute('data-value') !== correctAnswer) {
-                        opt.classList.add('incorrect');
-                    }
-                });
+    <!-- Tab Content: Values -->
+    <div id="values" class="tab-content">
+        <h2>5. الأهداف والقيم الواردة</h2>
+        <div class="card"><strong>الحذر من المداحين:</strong> عدم التصديق الأعمى لكل من يمتدحنا، فربما وراء المديح غرض مستتر.</div>
+        <div class="card"><strong>عاقبة الغرور:</strong> الغرور يؤدي بالصاحب إلى خسارة ما يملك.</div>
+        <div class="card"><strong>التعلم من الأخطاء:</strong> ندم الغراب في النهاية وإقسامه على عدم تكرار الخطأ.</div>
+        <div class="card"><strong>الذكاء مقابل السذاجة:</strong> القصيدة تبرز كيف يتغلب "الدهاء" على "النهم والسذاجة".</div>
+    </div>
 
-                if (selected && selected.getAttribute('data-value') === correctAnswer) {
-                    score++;
-                }
-            });
+    <!-- Tab Content: Quiz -->
+    <div id="quiz" class="tab-content">
+        <h2>6. اختبار قصير</h2>
+        <div class="quiz-container" id="quizForm">
+            <div class="question">1. ما معنى كلمة "دوحة" في البيت الأول؟</div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="0"> صحراء واسعة</label>
+                <label><input type="radio" name="q1" value="1"> شجرة عظيمة</label>
+            </div>
 
-            const resultDiv = document.getElementById('quizResult');
-            const percentage = (score / total) * 100;
-            let message = '';
+            <div class="question">2. بمَ شبه الشاعر جوع الثعلب؟</div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="1"> بالنار المشتعلة (الضرم)</label>
+                <label><input type="radio" name="q2" value="0"> بالبحر الهائج</label>
+            </div>
 
-            if (percentage >= 80) {
-                message = '🎉 ممتاز! أجبت بشكل صحيح على ' + score + ' من ' + total;
-                resultDiv.style.background = '#d4edda';
-                resultDiv.style.borderColor = '#28a745';
-            } else if (percentage >= 60) {
-                message = '👍 جيد! أجبت بشكل صحيح على ' + score + ' من ' + total;
-                resultDiv.style.background = '#fff3cd';
-                resultDiv.style.borderColor = '#ffc107';
-            } else {
-                message = '💪 يمكنك تحسين أدائك! أجبت بشكل صحيح على ' + score + ' من ' + total;
-                resultDiv.style.background = '#f8d7da';
-                resultDiv.style.borderColor = '#dc3545';
-            }
+            <div class="question">3. "يقرع سن الندم" تعبير يدل على:</div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="0"> الجوع الشديد</label>
+                <label><input type="radio" name="q3" value="1"> الحسرة والندم</label>
+            </div>
 
-            resultDiv.innerHTML = `<h4>النتيجة: ${percentage}%</h4><p>${message}</p>`;
-            resultDiv.style.display = 'block';
+            <button class="btn-submit" onclick="checkQuiz()">إرسال الإجابات</button>
+            <div id="quizResult" class="result"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.className += " active";
+    }
+
+    function checkQuiz() {
+        let score = 0;
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        const q3 = document.querySelector('input[name="q3"]:checked');
+
+        if (!q1 || !q2 || !q3) {
+            alert("يرجى الإجابة على جميع الأسئلة!");
+            return;
         }
 
-        function resetQuiz() {
-            document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected', 'correct', 'incorrect');
-                opt.style.pointerEvents = 'auto';
-            });
-            document.getElementById('quizResult').style.display = 'none';
-        }
+        if (q1.value == "1") score++;
+        if (q2.value == "1") score++;
+        if (q3.value == "1") score++;
 
-        // تأثيرات تفاعلية إضافية
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    section.style.opacity = '1';
-                }
-            });
-        });
-    </script>
+        const resultDiv = document.getElementById("quizResult");
+        resultDiv.style.display = "block";
+        
+        if(score === 3) {
+            resultDiv.style.backgroundColor = "#d4edda";
+            resultDiv.innerHTML = "أحسنت! حصلت على درجة كاملة 3/3";
+        } else {
+            resultDiv.style.backgroundColor = "#fff3cd";
+            resultDiv.innerHTML = "لقد حصلت على " + score + " من 3. حاول مرة أخرى!";
+        }
+    }
+</script>
+
 </body>
 </html>
