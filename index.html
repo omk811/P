@@ -952,6 +952,9 @@
             <button class="nav-tab" onclick="showSection('characters')">
                 <span>🎭</span> الشخصيات
             </button>
+            <button class="nav-tab" onclick="showSection('literary-devices')">
+                <span>🎨</span> الأساليب البلاغية
+            </button>
             <button class="nav-tab" onclick="showSection('activities')">
                 <span>🎮</span> الأنشطة
             </button>
@@ -1339,6 +1342,105 @@
             </div>
         </section>
 
+        <!-- صور جمالية وأساليب بلاغية -->
+        <section id="literary-devices" class="section">
+            <div class="section-title">
+                <span class="icon">🎨</span>
+                <h2>الصور الجمالية والأساليب البلاغية</h2>
+            </div>
+
+            <p style="text-align: center; margin-bottom: 20px; color: #64748b;">
+                👆 اكتشف الجمال الفني في القصيدة
+            </p>
+
+            <!-- جدول يوضح الأساليب البلاغية -->
+            <div style="overflow-x: auto; margin-bottom: 20px;">
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
+                            <th style="padding: 15px; text-align: center;">السلوب البلاغي</th>
+                            <th style="padding: 15px; text-align: center;">المثال من القصيدة</th>
+                            <th style="padding: 15px; text-align: center;">التفسير</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">التشبيه</td>
+                            <td style="padding: 15px; text-align: center; background: white;">"وريشُك زاهي الجمالِ"</td>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">يشبه ريش الغراب بالجمال اللامع، مما يُبرز جمال شكله.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; text-align: center; background: white;">الاستعارة</td>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">"يهيج حَشاهُ بمثلِ الضَّرَمِ"</td>
+                            <td style="padding: 15px; text-align: center; background: white;">يشير إلى جوع الثعلب الشديد، حيث يُشبه جوعه بالنار المشتعلة.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">التضاد</td>
+                            <td style="padding: 15px; text-align: center; background: white;">"فكان له من ألذِّ اللُّقَمِ" مقابل "كادَ الغرابُ يذوبُ حياءً"</td>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">يبرز الفارق بين سعادة الثعلب وندم الغراب.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; text-align: center; background: white;">التكاثر</td>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">"باهرُ شكلٍ، بديعُ الملامحِ، زاهي الجمالِ"</td>
+                            <td style="padding: 15px; text-align: center; background: white;">يكرّر الشاعر صفات المدح للغراب، مما يُظهر مكر الثعلب.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">التشخيص</td>
+                            <td style="padding: 15px; text-align: center; background: white;">"أنشأ يقرعُ سِنَّ الندمِ"</td>
+                            <td style="padding: 15px; text-align: center; background: #f8fafc;">يُصور الندم كأنه شيء مادي يُقرع، مما يُبرز شدة ندم الغراب.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- صور جمالية -->
+            <div style="margin-top: 30px;">
+                <h3 style="text-align: center; margin-bottom: 20px;">🌄 الصور الجمالية في القصيدة</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 20px; border-radius: 15px;">
+                        <h4 style="text-align: center; margin-bottom: 10px;">🌳 صورة الطبيعة</h4>
+                        <p style="text-align: center;">"إلى دوحةٍ قد أوى مرةً غرابٌ وفي غصنِها قد جثمْ"</p>
+                        <p style="text-align: center; color: #64748b;">تُصور الشجرة كملجأ آمن للغراب، مما يُضفي جواً من الهدوء قبل حدوث الأحداث.</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); padding: 20px; border-radius: 15px;">
+                        <h4 style="text-align: center; margin-bottom: 10px;">🎭 صورة المكر</h4>
+                        <p style="text-align: center;">"فالتقطها ذو الدهاءِ سريعاً"</p>
+                        <p style="text-align: center; color: #64748b;">تُظهر سرعة الثعلب وذكائه في الاستفادة من فرصة الغراب.</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f3e8ff, #e0e7ff); padding: 20px; border-radius: 15px;">
+                        <h4 style="text-align: center; margin-bottom: 10px;">😢 صورة الندم</h4>
+                        <p style="text-align: center;">"كادَ الغرابُ يذوبُ حياءً"</p>
+                        <p style="text-align: center; color: #64748b;">تُبرز شدة خجل الغراب وندمه بعد فوات الأوان.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- نشاط تفاعلي -->
+            <div style="margin-top: 30px; padding: 20px; background: #f8fafc; border-radius: 15px;">
+                <h3 style="text-align: center; margin-bottom: 15px;">🎮 نشاط: اكتشف الأسلوب البلاغي</h3>
+                <p style="text-align: center; margin-bottom: 20px; color: #64748b;">
+                    انقر على كل مثال لتحديد الأسلوب البلاغي المستخدم:
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                    <div class="vocab-card" onclick="revealMeaning(this)">
+                        <div class="vocab-word">"وريشُك زاهي الجمالِ"</div>
+                        <div class="vocab-hint">انقر لمعرفة الأسلوب</div>
+                        <div class="vocab-meaning">🎨 <strong>تشبيه:</strong> يُشبه ريش الغراب بالجمال اللامع.</div>
+                    </div>
+                    <div class="vocab-card" onclick="revealMeaning(this)">
+                        <div class="vocab-word">"يهيج حَشاهُ بمثلِ الضَّرَمِ"</div>
+                        <div class="vocab-hint">انقر لمعرفة الأسلوب</div>
+                        <div class="vocab-meaning">🔥 <strong>استعارة:</strong> يُشبه جوع الثعلب بالنار.</div>
+                    </div>
+                    <div class="vocab-card" onclick="revealMeaning(this)">
+                        <div class="vocab-word">"فكان له من ألذِّ اللُّقَمِ"</div>
+                        <div class="vocab-hint">انقر لمعرفة الأسلوب</div>
+                        <div class="vocab-meaning">⚖️ <strong>تضاد:</strong> يُقارن بين سعادة الثعلب وندم الغراب.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Activities Section -->
         <section id="activities" class="section">
             <div class="section-title">
@@ -1387,24 +1489,24 @@
             <div class="activity-card">
                 <h3 class="activity-title">✍️ النشاط الثاني: أكمل الفراغات</h3>
                 <div class="fill-blank-sentence">
-                    1. جلس الغراب على 
+                    1. جلس الغراب على
                     <input type="text" class="blank-input" data-answer="الشجرة" placeholder="...">
-                    وفي منقاره 
+                    وفي منقاره
                     <input type="text" class="blank-input" data-answer="جبنة" placeholder="...">
                 </div>
                 <div class="fill-blank-sentence">
-                    2. الثعلب كان 
+                    2. الثعلب كان
                     <input type="text" class="blank-input" data-answer="جائعاً" placeholder="...">
                     جداً
                 </div>
                 <div class="fill-blank-sentence">
-                    3. مدح الثعلب 
+                    3. مدح الثعلب
                     <input type="text" class="blank-input" data-answer="شكل" placeholder="...">
                     الغراب و
                     <input type="text" class="blank-input" data-answer="ريشه" placeholder="...">
                 </div>
                 <div class="fill-blank-sentence">
-                    4. عندما فتح الغراب منقاره 
+                    4. عندما فتح الغراب منقاره
                     <input type="text" class="blank-input" data-answer="سقطت" placeholder="...">
                     الجبنة
                 </div>
@@ -1459,7 +1561,7 @@
                 <span class="icon">✅</span>
                 <h2>اختبر نفسك</h2>
             </div>
-            
+
             <div class="progress-container">
                 <div class="progress-bar" id="quizProgress" style="width: 0%">0%</div>
             </div>
@@ -1566,18 +1668,18 @@
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
-            
+
             // Remove active from all tabs
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             // Show selected section
             document.getElementById(sectionId).classList.add('active');
-            
+
             // Add active to clicked tab
             event.target.closest('.nav-tab').classList.add('active');
-            
+
             // Initialize section-specific content
             if (sectionId === 'story') initStory();
             if (sectionId === 'quiz') initQuiz();
@@ -1709,7 +1811,7 @@
                 const items = Array.from(list.children);
                 const draggedIndex = items.indexOf(draggedItem);
                 const droppedIndex = items.indexOf(this);
-                
+
                 if (draggedIndex < droppedIndex) {
                     list.insertBefore(draggedItem, this.nextSibling);
                 } else {
@@ -1725,7 +1827,7 @@
                 const expectedOrder = index + 1;
                 const actualOrder = parseInt(item.dataset.order);
                 item.querySelector('.order-number').textContent = index + 1;
-                
+
                 if (expectedOrder === actualOrder) {
                     item.classList.remove('incorrect');
                     item.classList.add('correct');
@@ -1749,18 +1851,18 @@
         function resetOrder() {
             const list = document.getElementById('orderList');
             const items = Array.from(list.children);
-            
+
             // Shuffle
             for (let i = items.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 list.appendChild(items[j]);
             }
-            
+
             document.querySelectorAll('.order-item').forEach(item => {
                 item.classList.remove('correct', 'incorrect');
                 item.querySelector('.order-number').textContent = '؟';
             });
-            
+
             document.getElementById('orderFeedback').className = 'feedback';
         }
 
@@ -1768,12 +1870,12 @@
         function checkBlanks() {
             const inputs = document.querySelectorAll('.blank-input');
             let correct = 0;
-            
+
             inputs.forEach(input => {
                 const userAnswer = input.value.trim();
                 const correctAnswer = input.dataset.answer;
-                
-                if (userAnswer === correctAnswer || 
+
+                if (userAnswer === correctAnswer ||
                     userAnswer === correctAnswer.replace('ال', '') ||
                     'ال' + userAnswer === correctAnswer) {
                     input.classList.remove('incorrect');
@@ -1826,7 +1928,7 @@
                 selectedMeaning.classList.remove('selected');
                 selectedMeaning.classList.add('matched');
                 matchedPairs++;
-                
+
                 if (matchedPairs === 4) {
                     setTimeout(() => {
                         alert('🎉 أحسنت! أكملت جميع المطابقات بنجاح!');
@@ -1836,7 +1938,7 @@
                 selectedWord.classList.remove('selected');
                 selectedMeaning.classList.remove('selected');
             }
-            
+
             selectedWord = null;
             selectedMeaning = null;
         }
@@ -1862,7 +1964,7 @@
         function initTrueFalse() {
             const container = document.getElementById('trueFalseContainer');
             container.innerHTML = '';
-            
+
             trueFalseQuestions.forEach((q, index) => {
                 const div = document.createElement('div');
                 div.style.cssText = 'padding: 15px; background: white; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;';
@@ -1998,11 +2100,11 @@
 
         function submitQuiz() {
             let score = 0;
-            
+
             quizQuestions.forEach((q, qIndex) => {
                 const options = document.querySelectorAll(`.quiz-question:nth-child(${qIndex + 1}) .option`);
                 const feedback = document.getElementById(`feedback${qIndex}`);
-                
+
                 options.forEach((opt, oIndex) => {
                     opt.style.pointerEvents = 'none';
                     if (oIndex === q.correct) {
@@ -2032,10 +2134,10 @@
         function showResult(score) {
             const total = quizQuestions.length;
             const percent = Math.round((score / total) * 100);
-            
+
             let message = '';
             let emoji = '';
-            
+
             if (percent === 100) {
                 message = 'ممتاز! أداء رائع!';
                 emoji = '🏆';
